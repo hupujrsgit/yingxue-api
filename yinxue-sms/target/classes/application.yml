@@ -1,0 +1,38 @@
+server:
+  port: 8095
+spring:
+  application:
+    name: "SMS-API"
+
+  redis:
+    #    哨兵模式
+    sentinel:
+      master: mymaster
+      nodes: 106.14.81.28:26379
+    database: 0
+    timeout: 30000
+    lettuce:
+      pool:
+        max-active: 20
+        max-wait: -1
+        max-idle: 5
+        min-idle: 0
+    #        哨兵模式也要配置单节点 ，不然无法缓存
+    host: 106.14.81.28
+    port: 7000
+    password: 1a2b3c
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: root
+    password: root
+    virtual-host: /
+  cloud:
+    nacos:
+      server-addr: 106.14.81.28:8848
+
+#    sentinel:
+#      transport:
+#        dashboard: 106.14.81.28:8858
+#        port: 8719

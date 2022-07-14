@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yingxue-categories/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yingxue-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yingxue-search/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yingxue-users/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yingxue-videos/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yinxue-comons/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/yinxue-sms/src/main/java" charset="UTF-8" />
+  </component>
+</project>

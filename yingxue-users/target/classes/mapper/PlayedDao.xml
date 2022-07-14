@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exeplm.dao.PlayedDao">
+
+    <resultMap type="com.exeplm.entity.Played" id="PlayedMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="uid" column="uid" jdbcType="INTEGER"/>
+        <result property="videoId" column="video_id" jdbcType="INTEGER"/>
+        <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+        <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+        <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="PlayedMap">
+        select
+          id, uid, video_id, created_at, updated_at, deleted_at
+        from played
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="PlayedMap">
+        select
+          id, uid, video_id, created_at, updated_at, deleted_at
+        from played
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="uid != null">
+                and uid = #{uid}
+            </if>
+            <if test="videoId != null">
+                and video_id = #{videoId}
+            </if>
+            <if test="createdAt != null">
+                and created_at = #{createdAt}
+            </if>
+            <if test="updatedAt != null">
+                and updated_at = #{updatedAt}
+            </if>
+            <if test="deletedAt != null">
+                and deleted_at = #{deletedAt}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from played
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="uid != null">
+                and uid = #{uid}
+            </if>
+            <if test="videoId != null">
+                and video_id = #{videoId}
+            </if>
+            <if test="createdAt != null">
+                and created_at = #{createdAt}
+            </if>
+            <if test="updatedAt != null">
+                and updated_at = #{updatedAt}
+            </if>
+            <if test="deletedAt != null">
+                and deleted_at = #{deletedAt}
+            </if>
+        </where>
+    </select>
+    <select id="queryByUidAndVid" resultMap="PlayedMap">
+        select
+            id, uid, video_id, created_at, updated_at, deleted_at
+        from played
+        where uid = #{uid} and video_id=#{vid}
+    </select>
+    <select id="queryByUid" resultMap="PlayedMap" resultType="list">
+        select
+            id, uid, video_id, created_at, updated_at, deleted_at
+        from played
+        where uid = #{uid}
+        limit #{start},#{perPage}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into played(uid, video_id, created_at, updated_at, deleted_at)
+        values (#{uid}, #{videoId}, #{createdAt}, #{updatedAt}, #{deletedAt})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into played(uid, video_id, created_at, updated_at, deleted_at)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.uid}, #{entity.videoId}, #{entity.createdAt}, #{entity.updatedAt}, #{entity.deletedAt})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into played(uid, video_id, created_at, updated_at, deleted_at)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.uid}, #{entity.videoId}, #{entity.createdAt}, #{entity.updatedAt}, #{entity.deletedAt})
+        </foreach>
+        on duplicate key update
+        uid = values(uid),
+        video_id = values(video_id),
+        created_at = values(created_at),
+        updated_at = values(updated_at),
+        deleted_at = values(deleted_at)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update played
+        <set>
+            <if test="uid != null">
+                uid = #{uid},
+            </if>
+            <if test="videoId != null">
+                video_id = #{videoId},
+            </if>
+            <if test="createdAt != null">
+                created_at = #{createdAt},
+            </if>
+            <if test="updatedAt != null">
+                updated_at = #{updatedAt},
+            </if>
+            <if test="deletedAt != null">
+                deleted_at = #{deletedAt},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from played where id = #{id}
+    </delete>
+
+</mapper>
+

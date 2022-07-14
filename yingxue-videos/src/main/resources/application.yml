@@ -1,0 +1,56 @@
+server:
+  port: 8094
+spring:
+  application:
+    name: "VIDEOS-API"
+
+  cloud:
+    nacos:
+      server-addr: 106.14.81.28:8848
+  redis:
+    #    哨兵模式
+    sentinel:
+      master: mymaster
+      nodes: 106.14.81.28:26379
+    database: 0
+    timeout: 30000
+    lettuce:
+      pool:
+        max-active: 20
+        max-wait: -1
+        max-idle: 5
+        min-idle: 0
+    #        哨兵模式也要配置单节点 ，不然无法缓存
+    host: 106.14.81.28
+    port: 7000
+    password: 1a2b3c
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://106.14.81.28:3306/yingyue?characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: 1a2b3c
+
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: root
+    password: root
+    virtual-host: /
+mybatis:
+  mapper-locations: classpath:mapper/*Dao.xml
+  type-aliases-package: org.exeplm.entity
+
+logging:
+  level:
+    org.exeplm.dao:
+      debug
+#设置feign客户端超时时间(OpenFeign默认支持ribbon)
+ribbon:
+  #指的是建立连接所用的时间，适用于网络状况正常的情况下,两端连接所用的时间
+  ReadTimeout: 5000
+  #指的是建立连接后从服务器读取到可用资源所用的时间
+  ConnectTimeout: 5000
+es:
+ host: 127.0.0.1:9200

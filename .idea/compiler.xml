@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="yingxue-gateway" />
+        <module name="yingxue-categories" />
+        <module name="yingxue-users" />
+        <module name="yingxue-videos" />
+        <module name="yinxue-sms" />
+        <module name="yinxue-comons" />
+        <module name="yingxue-search" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="yingxue-api" options="-parameters" />
+      <module name="yingxue-categories" options="-parameters" />
+      <module name="yingxue-gateway" options="-parameters" />
+      <module name="yingxue-search" options="-parameters" />
+      <module name="yingxue-users" options="-parameters" />
+      <module name="yingxue-videos" options="-parameters" />
+      <module name="yinxue-comons" options="-parameters" />
+      <module name="yinxue-sms" options="-parameters" />
+    </option>
+  </component>
+</project>

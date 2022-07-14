@@ -1,0 +1,8 @@
+#spring:
+#  cloud:
+#    nacos:
+#      server-addr: 106.14.81.28:8848
+#      config:
+#        file-extension: yml
+#        name: yinxue-CATEGORIES-API-dev
+#        group: yinxue

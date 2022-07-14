@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exeplm.dao.VideoDao">
+
+    <resultMap type="com.exeplm.entity.Video" id="VideoMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="intro" column="intro" jdbcType="VARCHAR"/>
+        <result property="uid" column="uid" jdbcType="INTEGER"/>
+        <result property="cover" column="cover" jdbcType="VARCHAR"/>
+        <result property="link" column="link" jdbcType="VARCHAR"/>
+        <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+        <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+        <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+        <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
+        <result property="upload" column="uname" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="VideoMap">
+        select
+          id, title, intro, uid, cover, link, category_id, created_at, updated_at, deleted_at
+        from video
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="VideoMap">
+        select
+          id, title, intro, uid, cover, link, category_id, created_at, updated_at, deleted_at
+        from video
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="intro != null and intro != ''">
+                and intro = #{intro}
+            </if>
+            <if test="uid != null">
+                and uid = #{uid}
+            </if>
+            <if test="cover != null and cover != ''">
+                and cover = #{cover}
+            </if>
+            <if test="link != null and link != ''">
+                and link = #{link}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="createdAt != null">
+                and created_at = #{createdAt}
+            </if>
+            <if test="updatedAt != null">
+                and updated_at = #{updatedAt}
+            </if>
+            <if test="deletedAt != null">
+                and deleted_at = #{deletedAt}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from video
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="title != null and title != ''">
+                and title = #{title}
+            </if>
+            <if test="intro != null and intro != ''">
+                and intro = #{intro}
+            </if>
+            <if test="uid != null">
+                and uid = #{uid}
+            </if>
+            <if test="cover != null and cover != ''">
+                and cover = #{cover}
+            </if>
+            <if test="link != null and link != ''">
+                and link = #{link}
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="createdAt != null">
+                and created_at = #{createdAt}
+            </if>
+            <if test="updatedAt != null">
+                and updated_at = #{updatedAt}
+            </if>
+            <if test="deletedAt != null">
+                and deleted_at = #{deletedAt}
+            </if>
+        </where>
+    </select>
+    <select id="queryByPageList" resultMap="VideoMap">
+        select
+            v.id, v.title, v.intro, v.uid, v.cover, v.link, v.category_id, v.created_at, v.updated_at, v.deleted_at,
+            u.name as uname
+        from video v
+        left join user u  on v.uid = u.id
+         limit #{start} , #{perPage}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into video(title, intro, uid, cover, link, category_id, created_at, updated_at, deleted_at)
+        values (#{title}, #{intro}, #{uid}, #{cover}, #{link}, #{categoryId}, #{createdAt}, #{updatedAt}, #{deletedAt})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into video(title, intro, uid, cover, link, category_id, created_at, updated_at, deleted_at)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.title}, #{entity.intro}, #{entity.uid}, #{entity.cover}, #{entity.link}, #{entity.categoryId}, #{entity.createdAt}, #{entity.updatedAt}, #{entity.deletedAt})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into video(title, intro, uid, cover, link, category_id, created_at, updated_at, deleted_at)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.title}, #{entity.intro}, #{entity.uid}, #{entity.cover}, #{entity.link}, #{entity.categoryId}, #{entity.createdAt}, #{entity.updatedAt}, #{entity.deletedAt})
+        </foreach>
+        on duplicate key update
+        title = values(title),
+        intro = values(intro),
+        uid = values(uid),
+        cover = values(cover),
+        link = values(link),
+        category_id = values(category_id),
+        created_at = values(created_at),
+        updated_at = values(updated_at),
+        deleted_at = values(deleted_at)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update video
+        <set>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="intro != null and intro != ''">
+                intro = #{intro},
+            </if>
+            <if test="uid != null">
+                uid = #{uid},
+            </if>
+            <if test="cover != null and cover != ''">
+                cover = #{cover},
+            </if>
+            <if test="link != null and link != ''">
+                link = #{link},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId},
+            </if>
+            <if test="createdAt != null">
+                created_at = #{createdAt},
+            </if>
+            <if test="updatedAt != null">
+                updated_at = #{updatedAt},
+            </if>
+            <if test="deletedAt != null">
+                deleted_at = #{deletedAt},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from video where id = #{id}
+    </delete>
+
+</mapper>
+

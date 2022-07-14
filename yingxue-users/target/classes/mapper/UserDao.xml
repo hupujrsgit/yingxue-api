@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.exeplm.dao.UserDao">
+
+    <resultMap type="com.exeplm.entity.User" id="UserMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="intro" column="intro" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="phoneLinked" column="phone_linked" jdbcType="INTEGER"/>
+        <result property="openid" column="openid" jdbcType="VARCHAR"/>
+        <result property="wechatLinked" column="wechat_linked" jdbcType="INTEGER"/>
+        <result property="followingCount" column="following_count" jdbcType="INTEGER"/>
+        <result property="followersCount" column="followers_count" jdbcType="INTEGER"/>
+        <result property="createdAt" column="created_at" jdbcType="TIMESTAMP"/>
+        <result property="updatedAt" column="updated_at" jdbcType="TIMESTAMP"/>
+        <result property="deletedAt" column="deleted_at" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserMap">
+        select
+          id, name, avatar, intro, phone, phone_linked, openid, wechat_linked, following_count, followers_count, created_at, updated_at, deleted_at
+        from user
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserMap">
+        select
+          id, name, avatar, intro, phone, phone_linked, openid, wechat_linked, following_count, followers_count, created_at, updated_at, deleted_at
+        from user
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="avatar != null and avatar != ''">
+                and avatar = #{avatar}
+            </if>
+            <if test="intro != null and intro != ''">
+                and intro = #{intro}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="phoneLinked != null">
+                and phone_linked = #{phoneLinked}
+            </if>
+            <if test="openid != null and openid != ''">
+                and openid = #{openid}
+            </if>
+            <if test="wechatLinked != null">
+                and wechat_linked = #{wechatLinked}
+            </if>
+            <if test="followingCount != null">
+                and following_count = #{followingCount}
+            </if>
+            <if test="followersCount != null">
+                and followers_count = #{followersCount}
+            </if>
+            <if test="createdAt != null">
+                and created_at = #{createdAt}
+            </if>
+            <if test="updatedAt != null">
+                and updated_at = #{updatedAt}
+            </if>
+            <if test="deletedAt != null">
+                and deleted_at = #{deletedAt}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from user
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="avatar != null and avatar != ''">
+                and avatar = #{avatar}
+            </if>
+            <if test="intro != null and intro != ''">
+                and intro = #{intro}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="phoneLinked != null">
+                and phone_linked = #{phoneLinked}
+            </if>
+            <if test="openid != null and openid != ''">
+                and openid = #{openid}
+            </if>
+            <if test="wechatLinked != null">
+                and wechat_linked = #{wechatLinked}
+            </if>
+            <if test="followingCount != null">
+                and following_count = #{followingCount}
+            </if>
+            <if test="followersCount != null">
+                and followers_count = #{followersCount}
+            </if>
+            <if test="createdAt != null">
+                and created_at = #{createdAt}
+            </if>
+            <if test="updatedAt != null">
+                and updated_at = #{updatedAt}
+            </if>
+            <if test="deletedAt != null">
+                and deleted_at = #{deletedAt}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByPhone"  resultMap="UserMap">
+        select
+            id, name, avatar, intro, phone, phone_linked, openid, wechat_linked, following_count, followers_count, created_at, updated_at, deleted_at
+        from user where phone =#{phone}
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into user(name, avatar, intro, phone, phone_linked, openid, wechat_linked, following_count, followers_count, created_at, updated_at, deleted_at)
+        values (#{name}, #{avatar}, #{intro}, #{phone}, #{phoneLinked}, #{openid}, #{wechatLinked}, #{followingCount}, #{followersCount}, #{createdAt}, #{updatedAt}, #{deletedAt})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into user(name, avatar, intro, phone, phone_linked, openid, wechat_linked, following_count, followers_count, created_at, updated_at, deleted_at)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.name}, #{entity.avatar}, #{entity.intro}, #{entity.phone}, #{entity.phoneLinked}, #{entity.openid}, #{entity.wechatLinked}, #{entity.followingCount}, #{entity.followersCount}, #{entity.createdAt}, #{entity.updatedAt}, #{entity.deletedAt})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into user(name, avatar, intro, phone, phone_linked, openid, wechat_linked, following_count, followers_count, created_at, updated_at, deleted_at)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.name}, #{entity.avatar}, #{entity.intro}, #{entity.phone}, #{entity.phoneLinked}, #{entity.openid}, #{entity.wechatLinked}, #{entity.followingCount}, #{entity.followersCount}, #{entity.createdAt}, #{entity.updatedAt}, #{entity.deletedAt})
+        </foreach>
+        on duplicate key update
+        name = values(name),
+        avatar = values(avatar),
+        intro = values(intro),
+        phone = values(phone),
+        phone_linked = values(phone_linked),
+        openid = values(openid),
+        wechat_linked = values(wechat_linked),
+        following_count = values(following_count),
+        followers_count = values(followers_count),
+        created_at = values(created_at),
+        updated_at = values(updated_at),
+        deleted_at = values(deleted_at)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update user
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="avatar != null and avatar != ''">
+                avatar = #{avatar},
+            </if>
+            <if test="intro != null and intro != ''">
+                intro = #{intro},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="phoneLinked != null">
+                phone_linked = #{phoneLinked},
+            </if>
+            <if test="openid != null and openid != ''">
+                openid = #{openid},
+            </if>
+            <if test="wechatLinked != null">
+                wechat_linked = #{wechatLinked},
+            </if>
+            <if test="followingCount != null">
+                following_count = #{followingCount},
+            </if>
+            <if test="followersCount != null">
+                followers_count = #{followersCount},
+            </if>
+            <if test="createdAt != null">
+                created_at = #{createdAt},
+            </if>
+            <if test="updatedAt != null">
+                updated_at = #{updatedAt},
+            </if>
+            <if test="deletedAt != null">
+                deleted_at = #{deletedAt},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from user where id = #{id}
+    </delete>
+
+</mapper>
+

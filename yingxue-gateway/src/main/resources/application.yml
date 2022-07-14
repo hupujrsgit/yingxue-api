@@ -1,0 +1,62 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: "GATEWAY-API"
+
+
+  cloud:
+    nacos:
+      server-addr: 106.14.81.28:8848
+    gateway:
+      routes:
+        - id: categories-api
+          uri: lb://CATEGORIES-API
+          predicates:
+              - Path=/api/categories/demo,/api/categories/**
+          filters:
+              - StripPrefix=2
+
+        - id: sms-api
+          uri: lb://SMS-API
+          predicates:
+              - Path=/api/sms/demo,/api/sms/**
+          filters:
+              - StripPrefix=2
+
+        - id: users-api
+          uri: lb://USERS-API
+          predicates:
+              - Path=/api/user/demo,/api/user/**
+          filters:
+              - StripPrefix=2
+
+        - id: search-api
+          uri: lb://SEARCH-API
+          predicates:
+              - Path=/api/search/demo,/api/search/**
+          filters:
+              - StripPrefix=2
+
+        - id: videos-api
+          uri: lb://VIDEOS-API
+          predicates:
+              - Path=/api/videos/demo,/api/videos/**
+          filters:
+              - StripPrefix=2
+
+      globalcors: # 全局的跨域处理
+        add-to-simple-url-handler-mapping: true # 因为ajax发起者会通过options请求来向服务器询问是否允许跨域，所以需要设置为true来解决options请求被拦截问题
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: # 允许哪些网站的跨域请求
+              - "*"
+            allowedMethods: # 允许的跨域ajax的请求方式
+              - "GET"
+              - "POST"
+              - "DELETE"
+              - "PUT"
+              - "OPTIONS"
+            allowedHeaders: "*" # 允许在请求中携带的头信息
+            allowCredentials: true # 是否允许携带cookie
+            maxAge: 360000 # 这次跨域检测的有效期，即一定时间内就不需要重复询问是否允许跨域了，直接请求即可。
