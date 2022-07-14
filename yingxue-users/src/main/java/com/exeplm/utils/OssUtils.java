@@ -14,8 +14,8 @@ import java.io.InputStream;
 public class OssUtils {
 
 
-    static final String accessKeyIds = "LTAI5tQqM3y8wgPwbSuBanyv";
-    static final String accessKeySecrets = "qPZlgiVeER39TeuuarPJKHcfO5ewmS";
+    static final String accessKeyIds = "";
+    static final String accessKeySecrets = "";
 
     // Endpoint以华东1（杭州）为例，其它Region请按实际情况填写。
     static final String endpoint = "https://oss-cn-shanghai.aliyuncs.com";
